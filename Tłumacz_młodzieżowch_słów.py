@@ -1,5 +1,4 @@
 for i in range(7):
-    print(meme_dict)
     meme_dict = {
                 "CRINGE": "Coś wyjątkowo dziwnego lub zawstydzającego",
                 "LOL": "Częsta reakcja na coś zabawnego",
@@ -15,6 +14,5 @@ for i in range(7):
 
     if word in meme_dict.keys():
         print(meme_dict[word])
-        meme_dict = {"OK": "Reakcja na słowo"}
     else:
         print("nie ma jeszcze takiego słowa")
