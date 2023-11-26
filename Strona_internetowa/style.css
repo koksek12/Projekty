@@ -1,0 +1,36 @@
+body {
+    font-family: "Inter",  sans-serif; /* Rodzina czcionek */
+    font-size: 17px; /* Rozmiar głównej czcionki w <p></p> tag  */
+    background-color: #5988FF; /* Kolor tła strony internetowej */
+    text-decoration-color: blue;
+    color: #a9c3ff; /* Kolor tła strony internetowej*/ 
+}
+h1 {
+    color: #FD98FB; /* Kolor nagłówka */
+    font-size: 24px; /* Rozmiar czcionki nagłówka */
+    font-family: Georgia, serif; /* Rodzina czcionek używana w nagłówku */
+}
+h2 {
+    color: #FFFFFF; /* Kolor nagłówka */
+    font-size: 24px; /* Rozmiar czcionki nagłówka */
+    font-family: Georgia, serif; /* Rodzina czcionek używana w nagłówku */
+}
+
+@keyframes color-change {
+    0% {
+      color: rgb(68, 0, 255);
+    }
+
+    50% {
+      color: rgb(0, 255, 234);
+    }
+
+    100% {
+      color: rgb(0, 255, 64);
+    }
+    
+  }
+
+  h1:hover {
+    animation: color-change 3s infinite;
+  }
