@@ -1,0 +1,1191 @@
+#pgzero
+import random
+
+FPS = 60
+TITLE = "Inwazja Potworów"
+
+#tile do rozmiaru mapy 
+one_tile_size = Actor("tile_do_rozmiaru_mapy")
+
+#Wysokość i Szerokość okna
+WIDTH = one_tile_size.width * 30
+HEIGHT = one_tile_size.height * 20
+
+#Zmienne
+mode = "menu"
+level = 1
+level2_unlocked = True
+remove_enemy1 = False
+remove_enemy2 = False
+remove_enemy1_level2 = False
+remove_enemy2_level2 = False
+remove_enemy3_level2 = False
+collide_objects_level1 = 0
+collide_objects_level2 = 0
+show_ladder_level1 = False
+show_ladder_level2 = False
+show_ladder1_level2 = False
+win = 0
+coins_count = 0
+remove_coin1 = True
+remove_coin2 = True
+remove_coin1_level2 = True
+remove_coin2_level2 = True
+remove_blockade = False
+have_key = False
+buy_hero1 = False
+buy_hero2 = False
+buy_hero3 = False
+equip = False
+
+#listy
+slime_bullets_left = []
+slime_bullets_right = []
+coins = []
+
+#Kupine postacie
+buy_heroes = []
+
+#Bohater
+hero = Actor("hero_stand",(18,169))
+hero.health = 15
+hero.attack = 3
+hero_image = "hero"
+
+#Dalekość strzału
+bullet_x_right = hero.x + 50
+bullet_x_left = hero.x - 50
+
+#Tło
+bg = Actor("background")
+
+#Mapa level 1
+#_______________________________________________
+
+#Dół mapy
+tile1 = Actor("map",topleft = (0,180))  
+tile2 = Actor("map1",topleft = (108,198))  
+tile3 = Actor("map2",topleft = (216,216))
+tile4 = Actor("map3",topleft = (324,198))
+tile5 = Actor("map4",topleft = (432,180))
+
+#Góra mapy
+tile6 = Actor("top_of_map",topleft = (0,0))
+
+#Murki
+block1 = Actor("block",midbottom = (522,126))
+block2 = Actor("block1",topright = (423,72))
+block3 = Actor("block1",topright = (540,54))
+
+#Drzewo
+tree1 = Actor("tree",midbottom = (279,216))
+tree2 = Actor("tree1",midbottom = (279,144))
+
+#Drabiny
+ladder1 = Actor("ladder1",midbottom = (495,180))
+ladder2 = Actor("ladder",midbottom = (244,216))
+
+#Wrogowie
+
+#Wróg1
+enemy1 = Actor("enemy1_right",midleft = (324,186))
+
+#Życie wroga 1
+enemy1.health = random.randint(5,13)
+#Szybkość wroga 1
+enemy1.speed = random.randint(2,3)
+
+#Wróg 2
+enemy2 = Actor("enemy2_right",midleft = (328,60))
+
+#Życie wroga 2
+enemy2.health = random.randint(5,13)
+#Szybkość wroga 2
+enemy2.speed = random.randint(2,3)
+
+#Pieniadze
+coin1 = Actor("coin",(enemy1.x,enemy1.y))
+coin2 = Actor("coin",(enemy2.x,enemy2.y))
+
+#Gadżety bonusy, klucze, przyciski, blokady, drzwi
+button_level1 = Actor("button",midbottom = (531,108))
+key = Actor("key",midbottom = (279,94))
+blockade = Actor("blockade",topright = (486,0))
+door = Actor("door",topright = (540,18))
+#_________________________________________________
+
+#Mapa level 2
+#_________________________________________________
+
+#Dół mapy
+tile1_level2 = Actor("map_level2",bottomleft = (0,360))
+tile2_level2 = Actor("map1_level2",bottomleft = (180,360))
+tile3_level2 = Actor("map2_level2",bottomleft = (360,360))
+
+#Góra mapy
+tile4_level2 = Actor("top_of_map_level2",topleft = (0,0))
+
+#Grzyb
+mushroom1_level2 = Actor("mushroom2_level2",midbottom = (261,198))
+mushroom2_level2 = Actor("mushroom1_level2",midbottom = (261,134))
+
+#Bloki
+block1_level2 = Actor("block_level2",midbottom = (333,116))
+block2_level2 = Actor("block2_level2",midbottom = (449,63))
+block3_level2 = Actor("block3_level2",midright = (540,116))
+
+#Drabiny
+ladder1_level2 = Actor("ladder_level2",midbottom = (351,99))
+ladder2_level2 = Actor("ladder1",midright = (432,144))
+ladder3_level2 = Actor("ladder1_level2",(225,160))
+
+#Wrogowie
+
+#Wróg 1
+enemy1_level2 = Actor("enemy1_right",midright = (387,168))
+
+#Życie wroga1
+enemy1_level2.health = random.randint(8,19)
+#Szybkość wroga1
+enemy1_level2.speed = random.randint(2,3)
+
+#Wróg 2
+enemy2_level2 = Actor("enemy2_right",topright = (375,21))
+
+#Życie wroga1
+enemy2_level2.health = random.randint(8,19)
+#Szybkość wroga1
+enemy2_level2.speed = random.randint(2,3)
+
+#Wróg 3
+enemy3_level2 = Actor("bat_right",topright = (206,126))
+
+#Życie wroga1
+enemy3_level2.health = random.randint(3,7)
+#Szybkość wroga1
+enemy3_level2.speed = random.randint(3,5)
+
+
+#Pieniadze
+coin1_level2 = Actor("coin",(enemy1_level2.x,enemy1_level2.y))
+coin2_level2 = Actor("coin",(enemy2_level2.x,enemy2_level2.y))
+
+#Gadżety przyciski, drzwi
+button_level2 = Actor("button",bottomright = (540,180))
+door_level2 = Actor("door",topright = (540,9))
+lever_level2 = Actor("lever_level2",midbottom = (532,107))
+#_________________________________________________
+
+#Menu
+#_________________________________________________
+
+#Tło
+bg_menu = Actor("bg_menu")
+
+#Przyciski
+button_menu = Actor("button_menu",midbottom = (270,100))
+button1_menu = Actor("button_menu",midbottom = (270,200))
+button2_menu = Actor("button_menu",midbottom = (270,300))
+#_________________________________________________
+
+#Wybór levelu
+#_________________________________________________
+
+#Tło
+bg_choice_level = Actor("background")
+
+#Przyciski
+level1_button = Actor("level1_button",midleft = (36,198))
+level2_button = Actor("level2_button",midleft = (300,198))
+
+#Kłodka
+padlock = Actor("padlock",midleft = (319,180))
+#_________________________________________________
+
+#Sklep
+#_________________________________________________
+
+#Tło
+bg_shop = Actor("background")
+
+#Postacie do kupienia
+hero1 = Actor("hero1",midleft = (30,210))
+hero2 = Actor("hero2",midleft = (200,210))
+hero3 = Actor("hero3",midleft = (370,210))
+
+#Przyciski
+shop_button1 = Actor("shop_button",midleft = (53,320))
+shop_button2 = Actor("shop_button",midleft = (223,320))
+shop_button3 = Actor("shop_button",midleft = (393,320))
+#_________________________________________________
+
+#szafka
+#_________________________________________________
+
+#Tło
+bg_collection = Actor("background")
+
+#Napis założenia
+eq = Actor("eq_button")
+
+#Postacie w szafce
+hero1_collection = Actor("hero1",midleft = (30,180))
+hero2_collection = Actor("hero2",midleft = (200,180))
+hero3_collection = Actor("hero3",midleft = (370,180))
+#________________________________________________
+
+#Koniec gry
+#_______________________________________________
+
+#Tło
+bg_end = Actor("bg_menu")
+
+#Przyciski
+button_end = Actor("button_menu",midbottom = (270,180))
+button1_end = Actor("button_menu",midbottom = (270,300))
+#_______________________________________________
+
+#Krzyżyk
+cross = Actor("cross",(520,20))
+
+#Rysowanie mapy i charakterów
+def draw():
+    global level, level2_unlocked, show_ladder_level1, win, coins_count, remove_coin1, remove_coin2, remove_blockade, have_key, remove_enemy1_level2, remove_enemy2_level2, remove_enemy3_level2, show_ladder_level2, show_ladder1_level2, remove_coin1_level2, remove_coin2_level2, equip
+
+    if mode == "game":
+        if level == 1:
+            #Tło
+            bg.draw()
+            
+            #Dół mapy
+            tile1.draw()
+            tile2.draw()
+            tile3.draw()
+            tile4.draw()
+            tile5.draw()
+        
+            #Góra mapy
+            tile6.draw()
+    
+            #Drzewo
+            tree1.draw()
+            tree2.draw()
+    
+            #Bloki i blokady
+            block1.draw()
+            block2.draw()
+            block3.draw()
+    
+            #Drabina
+            ladder1.draw()
+            if show_ladder_level1 == True:
+                ladder2.draw()
+                
+            #Gadżety bonusy, klucze, przyciski, blokady, drzwi
+            button_level1.draw()
+            door.draw()
+            if have_key == False:
+                key.draw()
+            if remove_blockade == False:
+                blockade.draw()
+            
+            #Rysowanie pocisków
+            for i in range(len(slime_bullets_left)):
+                slime_bullets_left[i].draw()
+            for i in range(len(slime_bullets_right)):
+                slime_bullets_right[i].draw()
+                
+            #Wrogowie
+            if remove_enemy1 == False:
+                enemy1.draw()
+                screen.draw.text(enemy1.health,center = (enemy1.x,enemy1.y - 25), color = "black",fontsize = 24)
+        
+            if remove_enemy2 == False:
+                enemy2.draw()
+                screen.draw.text(enemy2.health,center = (enemy2.x,enemy2.y - 20), color = "black",fontsize = 24)
+            
+            #Pieniadze
+            if remove_coin1 == False:
+                coin1.draw()
+            if remove_coin2 == False:
+                coin2.draw()
+                
+            #Rysowanie bohatera
+            hero.draw()
+            
+            #Punkty życia oraz ataku oraz coiny
+            screen.draw.text(hero.attack,center = (120,320), color = "black",fontsize = 36)
+            screen.draw.text("AP:",center = (50,320), color = "black",fontsize = 36)
+            screen.draw.text(coins_count,center = (500,320), color = "black",fontsize = 36)
+
+        elif level == 2:
+            #Tło
+            bg.draw()
+            
+            #Drabiny
+            ladder1_level2.draw()
+            if show_ladder1_level2 == True:
+                ladder2_level2.draw()
+            if show_ladder_level2 == True:
+                ladder3_level2.draw()
+            
+            #Dół mapy
+            tile1_level2.draw()
+            tile2_level2.draw()
+            tile3_level2.draw()
+            
+            #Góra mapy
+            tile4_level2.draw()
+            
+            #Grzyb
+            mushroom1_level2.draw()
+            mushroom2_level2.draw()
+            
+            #Bloki
+            block1_level2.draw()
+            block2_level2.draw()
+            block3_level2.draw()
+            
+            #Gadżety przyciski, drzwi
+            button_level2.draw()
+            door_level2.draw()
+            lever_level2.draw()
+            
+            #Pieniadze
+            if remove_coin1_level2 == False:
+                coin1_level2.draw()
+            if remove_coin2_level2 == False:
+                coin2_level2.draw()
+                
+            
+            
+            #Wrogowie
+            if remove_enemy1_level2 == False:
+                enemy1_level2.draw()
+                screen.draw.text(enemy1_level2.health,center = (enemy1_level2.x,enemy1_level2.y - 25), color = "black",fontsize = 24)
+            if remove_enemy2_level2 == False:
+                enemy2_level2.draw()
+                screen.draw.text(enemy2_level2.health,center = (enemy2_level2.x,enemy2_level2.y - 20), color = "black",fontsize = 24)
+            if remove_enemy3_level2 == False:
+                enemy3_level2.draw()
+                screen.draw.text(enemy3_level2.health,center = (enemy3_level2.x,enemy3_level2.y - 20), color = "black",fontsize = 24)
+            
+            
+            #Rysowanie pocisków
+            for i in range(len(slime_bullets_left)):
+                slime_bullets_left[i].draw()
+            for i in range(len(slime_bullets_right)):
+                slime_bullets_right[i].draw()
+            
+            #Rysowanie bohatera
+            hero.draw()
+            
+            
+            #Punkty życia oraz ataku oraz coiny
+            screen.draw.text(hero.attack,center = (120,320), color = "black",fontsize = 36)
+            screen.draw.text("AP:",center = (50,320), color = "black",fontsize = 36)
+            screen.draw.text(coins_count,center = (500,320), color = "black",fontsize = 36)
+            
+    elif mode == "menu":
+        #Tło
+        bg_menu.draw()
+
+        #Przyciski
+        button_menu.draw()
+        button1_menu.draw()
+        button2_menu.draw()
+        
+        #Napisy
+        screen.draw.text("gra",center = (270,60), color = "black",fontsize = 64)
+        screen.draw.text("sklep",center = (270,165), color = "black",fontsize = 64)
+        screen.draw.text("szafka",center = (270,265), color = "black",fontsize = 64)  
+        screen.draw.text(coins_count,center = (20,20), color = "black",fontsize = 32)
+        
+    elif mode == "shop":
+        
+        #Tło
+        bg_shop.draw()
+        
+        #Postacie do kupienia
+        hero1.draw()
+        hero2.draw()
+        hero3.draw()
+        
+        #Napisy
+        screen.draw.text("15$",center = (100,80), color = "black",fontsize = 64)
+        screen.draw.text("30$",center = (275,80), color = "black",fontsize = 64)
+        screen.draw.text("60$",center = (445,80), color = "black",fontsize = 64)
+        screen.draw.text(coins_count,center = (20,20), color = "black",fontsize = 32)
+        
+        #Przyciski
+        shop_button1.draw()
+        shop_button2.draw()
+        shop_button3.draw()
+        
+        #Krzyżyk
+        cross.draw()
+        
+    elif mode == "choice_level":
+        
+        #Tło
+        bg_choice_level.draw()
+        
+        #Przyciski
+        level1_button.draw()
+        level2_button.draw()
+        
+        #Napisy
+        screen.draw.text("Wybierz level",center = (265,25), color = "black",fontsize = 36)
+        screen.draw.text("1",center = (135,180), color = "black",fontsize = 128)
+        
+        #Warunek rysowania kłódki
+        if level2_unlocked == 1:
+            screen.draw.text("2",center = (400,180), color = "black",fontsize = 128)
+        else:
+            #Rysowanie kłódki
+            padlock.draw()
+        
+        #Krzyżyk
+        cross.draw()
+    
+    elif mode == "collection":
+        
+        #Tło
+        bg_collection.draw()
+        
+        #Napis pod hero1
+        screen.draw.text("+1 attack",center = (93,290),color = "black",fontsize = 36)
+        
+        #Napis pod hero2
+        screen.draw.text("+2 attack",center = (263,290), color = "black",fontsize = 36)
+        
+        #Napis pod hero3
+        screen.draw.text("+3 attack",center = (433,290), color = "black",fontsize = 36)
+        
+        #Rysowanie kupionych postaci
+        for i in range(len(buy_heroes)):
+            buy_heroes[i].draw()
+        
+        if equip == True:
+            eq.draw()
+        
+        #Napisy
+        screen.draw.text(coins_count,center = (20,20), color = "black",fontsize = 32)
+            
+        #Krzyżyk
+        cross.draw()
+    
+    elif mode == "end":
+        #Tło
+        bg_end.draw()
+
+        #Przyciski
+        button_end.draw()
+        button1_end.draw()
+        
+        #Napisy
+        screen.draw.text("Restart",center = (270,145), color = "black",fontsize = 64)
+        screen.draw.text("Menu",center = (270,265), color = "black",fontsize = 64)
+        if win == 1:
+            screen.draw.text("Przegrałeś",center = (270,40), color = "black",fontsize = 64)
+        elif win == 2:
+            screen.draw.text("Wygrałeś",center = (270,40), color = "black",fontsize = 64)
+        
+        
+        
+def move_coins():
+    if remove_enemy1 == False:
+        coin1.pos = enemy1.pos
+    if remove_enemy2 == False:
+        coin2.pos = enemy2.pos
+    if remove_enemy1_level2 == False:
+        coin1_level2.pos = enemy1_level2.pos
+    if remove_enemy2_level2 == False:
+        coin2_level2.pos = enemy2_level2.pos
+    
+def bullet_move_right():
+    global bullet_x_right
+    
+    #Ruch pocisku w prawo
+    for i in range(len(slime_bullets_right)):
+        if slime_bullets_right[i].x < bullet_x_right and slime_bullets_right[i].x < WIDTH - 16:
+            slime_bullets_right[i].x += 5
+        else:
+            slime_bullets_right.pop(i)
+            break
+
+def bullet_move_left():
+    global bullet_x_left
+    
+    #Ruch pocisku w lewo
+    for i in range(len(slime_bullets_left)):
+        if slime_bullets_left[i].x > bullet_x_left and slime_bullets_left[i].x > 16:
+            slime_bullets_left[i].x -= 5
+        else:
+            slime_bullets_left.pop(i)
+            break
+        
+def enemy_move():
+    if mode == "game":
+        if level == 1:
+            #Ruch drugiego potwora
+            if enemy2.x <= 340:
+                animate(enemy2,tween = "linear",duration = enemy2.speed, x = 418)
+                enemy2.image = "enemy2_right"
+            elif enemy2.x >= 418:
+                animate(enemy2,tween = "linear",duration = enemy2.speed, x = 328)
+                enemy2.image = "enemy2_left"
+            
+            #Ruch pierwszego potwora
+            if enemy1.x <= 338:
+                animate(enemy1,tween = "linear",duration = enemy1.speed, x = 418)
+                enemy1.image = "enemy1_right"
+            elif enemy1.x >= 418:
+                animate(enemy1,tween = "linear",duration = enemy1.speed, x = 328)
+                enemy1.image = "enemy1_left"
+        elif level == 2:
+            #Ruch pierwszeg wroga
+            if enemy1_level2.x <= 376:
+                animate(enemy1_level2,tween = "linear",duration = enemy1_level2.speed, x = 526)
+                enemy1_level2.image = "enemy1_right"
+            elif enemy1_level2.x >= 524:
+                animate(enemy1_level2,tween = "linear",duration = enemy1_level2.speed, x = 375)
+                enemy1_level2.image = "enemy1_left"
+            
+            #Ruch drugiego wroga
+            if enemy2_level2.x <= 364:
+                animate(enemy2_level2,tween = "linear",duration = enemy2_level2.speed, x = 526)
+                enemy2_level2.image = "enemy2_right"
+            elif enemy2_level2.x >= 524:
+                animate(enemy2_level2,tween = "linear",duration = enemy2_level2.speed, x = 316)
+                enemy2_level2.image = "enemy2_left"
+            
+            #Ruch trzeciego wroga
+            if enemy3_level2.x <= 207:
+                animate(enemy3_level2,tween = "linear",duration = enemy3_level2.speed, x = 526)
+                enemy3_level2.image = "bat_right"
+            elif enemy3_level2.x >= 524:
+                animate(enemy3_level2,tween = "linear",duration = enemy3_level2.speed, x = 206)
+                enemy3_level2.image = "bat_left"
+                
+def key_blockade():
+    global have_key, remove_blockade
+    #Branie klucza
+    if have_key == False:
+        if hero.colliderect(key):
+            have_key = True
+            
+    #Otwieranie blokady
+    if hero.colliderect(blockade):
+        if have_key == True:
+            remove_blockade = True
+        
+def collisions_coins():
+    global coins_count, remove_coin1, remove_coin2, remove_coin1_level2, remove_coin2_level2
+    
+    if level == 1:
+        #Zbiernaie pieniedzy
+        if hero.colliderect(coin1):
+            if remove_coin1 == False:
+                random_coin1_value = random.randint(1,4)
+                coins_count += random_coin1_value
+                remove_coin1 = True
+        elif hero.colliderect(coin2):
+            if remove_coin2 == False:
+                random_coin2_value = random.randint(1,4)
+                coins_count += random_coin2_value
+                remove_coin2 = True    
+    elif level == 2:
+        #Zbiernaie pieniedzy
+        if hero.colliderect(coin1_level2):
+            if remove_coin1_level2 == False:
+                random_coin1_level2_value = random.randint(2,6)
+                coins_count += random_coin1_level2_value
+                remove_coin1_level2 = True
+        elif hero.colliderect(coin2_level2):
+            if remove_coin2_level2 == False:
+                random_coin2_level2_value = random.randint(2,6)
+                coins_count += random_coin2_level2_value
+                remove_coin2_level2 = True  
+    
+    
+def collision_enemy_bullets():
+    global remove_enemy1, remove_enemy2, mode, level, win, remove_coin1, remove_coin2, level2_unlocked, remove_enemy1_level2, remove_enemy2_level2, remove_enemy3_level2, remove_coin1_level2, remove_coin2_level2, hero_image, equip
+    if mode == "game":
+        if level == 1:
+            #Kolizja strzału z prawej strony z przeciwnikiem 1
+            bullets_index_right_enemy1 = enemy1.collidelist(slime_bullets_right)
+            if remove_enemy1 == False:
+                if enemy1.health <= 0:
+                    remove_enemy1 = True
+                    remove_coin1 = False
+                elif bullets_index_right_enemy1 != -1:
+                    if enemy1.health > 0:
+                        enemy1.health -= hero.attack
+                        slime_bullets_right.pop(bullets_index_right_enemy1)
+                    
+            #Kolizja strzału z prawej strony z przeciwnikiem 2
+            bullets_index_right_enemy2 = enemy2.collidelist(slime_bullets_right)
+            if remove_enemy2 == False:
+                if enemy2.health <= 0:
+                    remove_enemy2 = True
+                    remove_coin2 = False
+                elif bullets_index_right_enemy2 != -1:
+                    if enemy2.health > 0:
+                        enemy2.health -= hero.attack
+                        slime_bullets_right.pop(bullets_index_right_enemy2)
+            
+            #Kolizja strzału z prawej strony z przeciwnikiem 1
+            bullets_index_left_enemy1 = enemy1.collidelist(slime_bullets_left)
+            if remove_enemy1 == False:
+                if enemy1.health <= 0:
+                    remove_enemy1 = True
+                    remove_coin1 = False
+                elif bullets_index_left_enemy1 != -1:
+                    if enemy1.health > 0:
+                        enemy1.health -= hero.attack
+                        slime_bullets_right.pop(bullets_index_left_enemy1)
+            
+            #Kolizja strzału z lewej strony z przeciwnikiem 2
+            bullets_index_left_enemy2 = enemy2.collidelist(slime_bullets_left)
+            if remove_enemy2 == False:
+                if enemy2.health <= 0:
+                    remove_enemy2 = True
+                    remove_coin2 = False
+                elif bullets_index_left_enemy2 != -1:
+                    if enemy2.health > 0:
+                        enemy2.health -= hero.attack
+                        slime_bullets_right.pop(bullets_index_left_enemy2)
+                
+            
+            #Warunek końca gry w przypadku zderzenia z wrogiem 1
+            if remove_enemy1 == False:
+                if hero.colliderect(enemy1):
+                    mode = "end"
+                    win = 1
+        
+            #Warunek końca gry w przypadku zderzenia z wrogiem 2
+            if remove_enemy2 == False:
+                if hero.colliderect(enemy2):
+                    mode = "end"
+                    win = 1
+            
+            #Warunek wygrania gry w 1 poziomie
+            if hero.colliderect(door):
+                mode = "end"
+                win = 2
+                level2_unlocked = True
+        
+        elif level == 2:
+            #Kolizja strzału z prawej strony z przeciwnikiem 1
+            bullets_index_right_enemy1_level2 = enemy1_level2.collidelist(slime_bullets_right)
+            if remove_enemy1_level2 == False:
+                if enemy1_level2.health <= 0:
+                    remove_enemy1_level2 = True
+                    remove_coin1_level2 = False
+                elif bullets_index_right_enemy1_level2 != -1:
+                    if enemy1_level2.health > 0:
+                        enemy1_level2.health -= hero.attack
+                        slime_bullets_right.pop(bullets_index_right_enemy1_level2)
+            
+            #Kolizja strzału z lewej strony z przeciwnikiem 1
+            bullets_index_left_enemy1_level2 = enemy1_level2.collidelist(slime_bullets_left)
+            if remove_enemy1_level2 == False:
+                if enemy1_level2.health <= 0:
+                    remove_enemy1_level2 = True
+                    remove_coin1_level2 = False
+                elif bullets_index_left_enemy1_level2 != -1:
+                    if enemy1_level2.health > 0:
+                        enemy1_level2.health -= hero.attack
+                        slime_bullets_left.pop(bullets_index_left_enemy1_level2)
+            
+            #Kolizja strzału z prawej strony z przeciwnikiem 2
+            bullets_index_right_enemy2_level2 = enemy2_level2.collidelist(slime_bullets_right)
+            if remove_enemy2_level2 == False:
+                if enemy2_level2.health <= 0:
+                    remove_enemy2_level2 = True
+                    remove_coin2_level2 = False
+                elif bullets_index_right_enemy2_level2 != -1:
+                    if enemy2_level2.health > 0:
+                        enemy2_level2.health -= hero.attack
+                        slime_bullets_right.pop(bullets_index_right_enemy2_level2)
+            
+            #Kolizja strzału z lewej strony z przeciwnikiem 2
+            bullets_index_left_enemy2_level2 = enemy2_level2.collidelist(slime_bullets_left)
+            if remove_enemy2_level2 == False:
+                if enemy2_level2.health <= 0:
+                    remove_enemy2_level2 = True
+                    remove_coin2_level2 = False
+                elif bullets_index_left_enemy2_level2 != -1:
+                    if enemy2_level2.health > 0:
+                        enemy2_level2.health -= hero.attack
+                        slime_bullets_left.pop(bullets_index_left_enemy2_level2)
+            
+            #Kolizja strzału z prawej strony z przeciwnikiem 3
+            bullets_index_right_enemy3_level2 = enemy3_level2.collidelist(slime_bullets_right)
+            if remove_enemy3_level2 == False:
+                if enemy3_level2.health <= 0:
+                    remove_enemy3_level2 = True
+                elif bullets_index_right_enemy2_level2 != -1:
+                    if enemy3_level2.health > 0:
+                        enemy3_level2.health -= hero.attack
+                        slime_bullets_right.pop(bullets_index_right_enemy3_level2)
+            
+            #Kolizja strzału z lewej strony z przeciwnikiem 3
+            bullets_index_left_enemy3_level2 = enemy3_level2.collidelist(slime_bullets_left)
+            if remove_enemy3_level2 == False:
+                if enemy3_level2.health <= 0:
+                    remove_enemy3_level2 = True
+                elif bullets_index_left_enemy3_level2 != -1:
+                    if enemy3_level2.health > 0:
+                        enemy3_level2.health -= hero.attack
+                        slime_bullets_left.pop(bullets_index_left_enemy3_level2)
+                        
+            #Warunek końca gry w przypadku zderzenia z wrogiem 1
+            if remove_enemy1_level2 == False:
+                if hero.colliderect(enemy1_level2):
+                    mode = "end"
+                    win = 1
+        
+            #Warunek końca gry w przypadku zderzenia z wrogiem 2
+            if remove_enemy2_level2 == False:
+                if hero.colliderect(enemy2_level2):
+                    mode = "end"
+                    win = 1
+            
+            #Warunek końca gry w przypadku zderzenia z wrogiem 2
+            if remove_enemy3_level2 == False:
+                if hero.colliderect(enemy3_level2):
+                    mode = "end"
+                    win = 1
+            
+            #Warunek wygrania gry w 1 poziomie
+            if hero.colliderect(door_level2):
+                mode = "end"
+                win = 2
+
+                    
+
+        
+def jump_and_collision():
+    global show_ladder_level1, remove_blockade
+    #Pozycja skoku
+    
+    if mode == "game":
+        #Skok
+        if level == 1:
+            #Kolizja z drzewem od lewej i prawej w levelu 1
+            if hero.colliderect(tree2) and hero.y >= 85 and hero.y <= 150 and hero.x >= 244 and hero.x <= 270:
+                hero.x -= 2
+            elif hero.colliderect(tree2) and hero.y >= 87 and hero.y <= 150 and hero.x <= 320 and hero.x >= 290:
+                hero.x += 2
+                
+            #Kolizja z blockiem 1 od lewej
+            if hero.colliderect(block1) and hero.y <= 135 and hero.y >= 99 and hero.x <= 506 and hero.x >= 496:
+                hero.x -= 2
+            
+            #Kolizja z blockiem 2 od lewej i prawej
+            if hero.colliderect(block2) and hero.y >= 60 and hero.y <= 91 and hero.x >= 325 and hero.x <= 348:
+                hero.x -= 2
+            elif hero.colliderect(block2) and hero.y >= 60 and hero.y <= 91 and hero.x <= 452 and hero.x >= 420:
+                hero.x += 2
+             
+            #Kolizja z blokadą
+            if remove_blockade == False:
+                if hero.colliderect(blockade) and have_key == False:
+                    hero.x -= 2
+                
+            #Kolizja z blockiem 3 od lewej
+            if hero.colliderect(block3) and hero.y > 47 and hero.y < 82 and hero.x > 442 and hero.x < 470:
+                hero.x -= 2
+                
+            #Kolizja z dołem mapy od boku
+            if hero.colliderect(tile1) and hero.y >= 173 and hero.y <= 201:
+                hero.x += 2
+            elif hero.colliderect(tile2) and hero.y >= 190 and hero.y <= 219:
+                hero.x += 2
+            elif hero.colliderect(tile4) and hero.y >= 190 and hero.y <= 219:
+                hero.x -= 2
+            elif hero.colliderect(tile5) and hero.y >= 174 and hero.y <= 201:
+                hero.x -= 2
+            
+            
+            #Wchodzenie na drabine w levelu 1
+            if hero.colliderect(ladder1) or (hero.colliderect(ladder2) and show_ladder_level1 == True):
+                if keyboard.up and not ((hero.colliderect(block1) and hero.x > 500 and hero.x < 542 and hero.y > 127) or (hero.colliderect(tree2) and hero.x > 250 and hero.x < 308 and hero.y > 144)):
+                    hero.y -= 2
+                elif keyboard.down and not (hero.colliderect(tile3) or hero.colliderect(tile5) or (hero.colliderect(block1) and hero.y < 103 and hero.x >= 500 and hero.x <= 542) or (hero.colliderect(tree2) and hero.y < 81 and hero.x > 248 and hero.x < 310)):
+                    hero.y += 2
+            #Kolizja z obiektami od góry        
+            elif hero.colliderect(tile1) or hero.colliderect(tile2) or hero.colliderect(tile3) or hero.colliderect(tile4) or hero.colliderect(tile5) or (hero.colliderect(tree2) and hero.y < 92 and hero.x > 242 and hero.x < 310) or (hero.colliderect(block1) and hero.y < 104) or (hero.colliderect(block2) and hero.y < 66 and hero.x > 320 and hero.x < 435) or (hero.colliderect(block3) and hero.y < 47):
+                if keyboard.space and not hero.colliderect(block1):
+                    jump_y = hero.y - 30
+                    animate(hero, tween = "linear", duration = 0.4, y = jump_y)
+            else:
+                hero.y += 2
+        
+        elif level == 2:
+            
+            #Kolizja z dołem mapy
+            if hero.colliderect(tile1_level2) and hero.y <= 199 and hero.y >= 171:
+                hero.x += 2
+            elif hero.colliderect(tile3_level2) and hero.y <= 199 and hero.y >= 171:
+                hero.x -= 2
+            
+            #Kolizja z 3 blokiem
+            if hero.colliderect(block3_level2) and hero.y >= 99 and hero.y <= 135 and hero.x >= 423 and hero.x <= 441:
+                hero.x -= 2
+                
+            #Kolizja z blockiem 2 
+            if hero.colliderect(block2_level2) and hero.x > 351 and hero.y > 36 and hero.y < 73:
+                hero.x -= 2
+                
+            #Kolizja z 1 blockiem
+            if hero.colliderect(block1_level2) and hero.y > 88 and hero.y < 122 and hero.x > 294 and hero.x < 315:
+                hero.x -= 2
+                hero.y += 2
+            elif hero.colliderect(block1_level2) and hero.y > 88 and hero.y < 122 and hero.x < 369 and hero.x > 359:
+                hero.x += 2
+                hero.y += 2
+                
+            #Kolizja z grzybem
+            if hero.colliderect(mushroom2_level2) and hero.y > 106 and hero.y < 147 and hero.x > 222 and hero.x < 230:
+                hero.x -= 2
+            elif hero.colliderect(mushroom2_level2) and hero.y > 106 and hero.y < 140 and hero.x < 300 and hero.x > 293:
+                hero.x += 2
+                
+            #Wchodzenie na drabine w levelu 2
+            if (hero.colliderect(ladder2_level2) and show_ladder1_level2 == True) or (hero.colliderect(ladder3_level2) and show_ladder_level2 == True) or hero.colliderect(ladder1_level2):
+                if keyboard.up and not ((hero.colliderect(mushroom2_level2) and hero.y < 147 and hero.x > 228 and hero.x < 260) or (hero.colliderect(block2_level2) and hero.y < 74 and hero.x > 354 and hero.x < 380) or (hero.colliderect(block3_level2) and hero.x > 428 and hero.x < 457) or (hero.colliderect(block1_level2) and hero.y > 88 and hero.y < 122)):
+                    hero.y -= 2
+                elif keyboard.down and not (hero.colliderect(tile3_level2) or (hero.colliderect(block3_level2) and hero.x > 415 and hero.x < 470 and hero.y < 99) or hero.colliderect(tile2_level2) or (hero.colliderect(mushroom2_level2) and hero.y < 106 and hero.x > 228 and hero.x < 293) or hero.colliderect(block1_level2) or (hero.colliderect(block2_level2) and hero.y < 88 and hero.x > 357 and hero.x < 531) or (hero.colliderect(block1_level2) and hero.y > 88 and hero.y < 122)):
+                    hero.y += 2
+                    
+            #Kolizja z obiektami od góry
+            elif hero.colliderect(tile1_level2) or hero.colliderect(tile2_level2) or hero.colliderect(tile3_level2) or (hero.colliderect(block3_level2) and hero.y < 99) or (hero.colliderect(mushroom2_level2) and hero.y < 106 and hero.x > 225 and hero.x < 294) or (hero.colliderect(block1_level2) and hero.y < 88) or (hero.colliderect(block2_level2) and hero.y < 41):
+                if keyboard.space and not hero.colliderect(block3_level2):
+                    jump_y = hero.y - 30
+                    animate(hero, tween = "linear", duration = 0.4, y = jump_y)
+            else:
+                hero.y += 2
+            
+            
+
+def showing_objects():
+    global show_ladder_level1, show_ladder_level2, show_ladder1_level2
+    if level == 1:
+        if hero.colliderect(button_level1):
+            button_level1.image = "button1"
+            show_ladder_level1 = True
+    elif level == 2:
+        if hero.colliderect(button_level2):
+            button_level2.image = "button1"
+            show_ladder1_level2 = True
+        elif hero.colliderect(lever_level2):
+            lever_level2.image = "lever1_level2"
+            show_ladder_level2 = True
+    
+    
+def update(dt):
+    global hero_image
+    
+    #Wywoływanie funkcji
+    bullet_move_right()
+    bullet_move_left()
+    jump_and_collision()
+    enemy_move()
+    collision_enemy_bullets()
+    showing_objects()
+    move_coins()
+    collisions_coins()
+    key_blockade()
+    
+    if mode == "game":    
+        #Ruch postacie
+        if keyboard.left and hero.x > 11:
+            if hero_image == "hero":
+                hero.x -= 2
+                hero.image = "hero_left_move"
+            elif hero_image == "hero1":
+                hero.x -= 2
+                hero.image = "hero1_left_move"
+            elif hero_image == "hero2":
+                hero.x -= 2
+                hero.image = "hero2_left_move"
+            elif hero_image == "hero3":
+                hero.x -= 2
+                hero.image = "hero3_left_move"
+                
+        elif keyboard.right and hero.x < WIDTH - 11:
+            if hero_image == "hero":
+                hero.x += 2
+                hero.image = "hero_right_move"
+            elif hero_image == "hero1":
+                hero.x += 2
+                hero.image = "hero1_right_move"
+            elif hero_image == "hero2":
+                hero.x += 2
+                hero.image = "hero2_right_move"
+            elif hero_image == "hero3":
+                hero.x += 2
+                hero.image = "hero3_right_move"
+                
+        else:
+            if hero_image == "hero":
+                hero.image = "hero_stand"
+            elif hero_image == "hero1":
+                hero.image = "hero1_stand"
+            elif hero_image == "hero2":
+                hero.image = "hero2_stand"
+            elif hero_image == "hero3":
+                hero.image = "hero3_stand"
+        
+def on_mouse_down(button, pos):
+    global mode, level2_unlocked, coins_count, hero_image, buy_hero1, buy_hero2, buy_hero3, win, level, mode, remove_enemy1, remove_enemy2, show_ladder_level1, remove_coin1, remove_coin2, remove_blockade, have_key, bullet_x_right, bullet_x_left, remove_enemy1_level2, remove_enemy2_level2, remove_enemy3_level2, show_ladder_level2, remove_coin1_level2, remove_coin1_level2, buy_heroes, equip, hero_image
+    if mode == "game":
+        #Warunek strzału w lewo
+        if button == mouse.LEFT:
+            bullet_x_left = hero.x - 60
+            bullet = Actor("bullet_left")
+            bullet.pos = hero.pos
+            slime_bullets_left.append(bullet)
+        
+        #Warunek strzału w prawo
+        elif button == mouse.RIGHT:
+            bullet_x_right = hero.x + 60
+            bullet = Actor("bullet_right")
+            bullet.pos = hero.pos
+            slime_bullets_right.append(bullet)
+            
+    
+    elif mode == "menu":
+        #Używanie przycisków w menu
+        if button_menu.collidepoint(pos):
+            if button == mouse.LEFT:
+                mode = "choice_level"
+        
+        #Wejście do sklepu
+        if button1_menu.collidepoint(pos):
+            if button == mouse.LEFT:
+                mode = "shop"
+        
+        #Wejście do szafki
+        if button2_menu.collidepoint(pos):
+            if button == mouse.LEFT:
+                mode = "collection"
+        
+    
+    
+    elif mode == "choice_level":
+        #Wejscie do levelu 1
+        if level1_button.collidepoint(pos):
+            if button == mouse.LEFT:
+                if level == 1:
+                    win = 0
+                    level = 1
+                    hero.pos = (18,169)
+                    remove_enemy1 = False
+                    remove_enemy2 = False
+                    show_ladder_level1 = False
+                    remove_coin1 = True
+                    remove_coin2 = True
+                    remove_blockade = False
+                    have_key = False
+                    #Szybkość wrogów
+                    enemy1.speed = random.randint(2,3)
+                    enemy2.speed = random.randint(2,3)
+                    #Życie wrogów    
+                    enemy1.health = random.randint(3,8)
+                    enemy2.health = random.randint(3,8)
+                    button_level1.image = "button"
+                    mode = "game"
+                elif level == 2:
+                    win = 0
+                    level = 2
+                    hero.pos = (18,169)
+                    remove_enemy1_level2 = False
+                    remove_enemy2_level2 = False
+                    remove_enemy3_level2 = False
+                    remove_coin1_level2 = False
+                    remove_coin2_level2 = False
+                    show_ladder_level2 = False
+                    #Szybkość wrogów
+                    enemy1_level2.speed = random.randint(2,3)
+                    enemy2_level2.speed = random.randint(2,3)
+                    enemy3_level2.speed = random.randint(3,5)
+                    #Życie wrogów    
+                    enemy1_level2.health = random.randint(5,13)
+                    enemy2_level2.health = random.randint(5,13)
+                    enemy3_level2.health = random.randint(3,7)
+                    button_level2.image = "button"
+                    lever_level2.image = "lever_level2"
+                    mode = "game"
+        
+        #Wejsćie do levelu 2
+        elif level2_unlocked == 1:
+            if level2_button.collidepoint(pos):
+                if button == mouse.LEFT:
+                   if level == 1:
+                       win = 0
+                       level = 2
+                       hero.pos = (18,169)
+                       remove_enemy1 = False
+                       remove_enemy2 = False
+                       show_ladder_level1 = False
+                       remove_coin1 = True
+                       remove_coin2 = True
+                       remove_blockade = False
+                       have_key = False
+                       #Szybkość wrogów
+                       enemy1.speed = random.randint(2,3)
+                       enemy2.speed = random.randint(2,3)
+                       #Życie wrogów    
+                       enemy1.health = random.randint(5,13)
+                       enemy2.health = random.randint(5,13)
+                       button_level1.image = "button"
+                       mode = "game"
+                   elif level == 2:
+                       win = 0
+                       level = 2
+                       hero.pos = (18,169)
+                       remove_enemy1_level2 = False
+                       remove_enemy2_level2 = False
+                       remove_enemy3_level2 = False
+                       remove_coin1_level2 = False
+                       remove_coin2_level2 = False
+                       show_ladder_level2 = False
+                       #Szybkość wrogów
+                       enemy1_level2.speed = random.randint(2,3)
+                       enemy2_level2.speed = random.randint(2,3)
+                       enemy3_level2.speed = random.randint(3,5)
+                       #Życie wrogów    
+                       enemy1_level2.health = random.randint(8,19)
+                       enemy2_level2.health = random.randint(8,19)
+                       enemy3_level2.health = random.randint(3,7)
+                       lever_level2.image = "lever_level2"
+                       button_level2.image = "button"
+                       mode = "game"
+        
+        #krzyżyk wyjścia z gry
+        if cross.collidepoint(pos):
+            mode = "menu"
+    
+    elif mode == "shop":
+        
+        #Kupowanie postaci 1
+        if shop_button1.collidepoint(pos):
+            if coins_count >= 15:
+                if buy_hero1 == False:
+                    coins_count -= 15
+                    hero_image = "hero1"
+                    hero.attack = 4
+                    buy_heroes.append(hero1_collection)
+                    buy_hero1 = True
+        
+        #Kupowanie postaci 2
+        elif shop_button2.collidepoint(pos):
+            if coins_count >= 30:
+                if buy_hero2 == False:
+                    coins_count -= 30
+                    hero_image = "hero2"
+                    hero.attack = 5
+                    buy_heroes.append(hero2_collection)
+                    buy_hero2 = True
+        
+        #Kupowanie postaci 3
+        elif shop_button3.collidepoint(pos):
+            if coins_count >= 60:
+                if buy_hero3 == False:
+                    coins_count -= 60
+                    hero_image = "hero3"
+                    hero.attack = 6
+                    buy_heroes.append(hero3_collection)
+                    buy_hero3 = True
+        
+        #krzyżyk wyjścia z gry
+        if cross.collidepoint(pos):
+            mode = "menu"
+    
+    elif mode == "end":
+        #Powrót do menu
+        if button1_end.collidepoint(pos):
+            if button == mouse.LEFT:
+                mode = "menu"
+        #Restart
+        if button_end.collidepoint(pos):
+            if button == mouse.LEFT:
+                if level == 1:
+                    win = 0
+                    level = 1
+                    hero.pos = (18,169)
+                    remove_enemy1 = False
+                    remove_enemy2 = False
+                    show_ladder_level1 = False
+                    remove_coin1 = True
+                    remove_coin2 = True
+                    remove_blockade = False
+                    have_key = False
+                    #Szybkość wrogów
+                    enemy1.speed = random.randint(2,3)
+                    enemy2.speed = random.randint(2,3)
+                    #Życie wrogów    
+                    enemy1.health = random.randint(5,13)
+                    enemy2.health = random.randint(5,13)
+                    button_level1.image = "button"
+                    mode = "game"
+                elif level == 2:
+                    win = 0
+                    level = 2
+                    hero.pos = (18,169)
+                    remove_enemy1_level2 = False
+                    remove_enemy2_level2 = False
+                    remove_enemy3_level2 = False
+                    remove_coin1_level2 = False
+                    remove_coin2_level2 = False
+                    show_ladder_level2 = False
+                    #Szybkość wrogów
+                    enemy1_level2.speed = random.randint(2,3)
+                    enemy2_level2.speed = random.randint(2,3)
+                    enemy3_level2.speed = random.randint(3,5)
+                    #Życie wrogów    
+                    enemy1_level2.health = random.randint(8,19)
+                    enemy2_level2.health = random.randint(8,19)
+                    enemy3_level2.health = random.randint(3,7)
+                    lever_level2.image = "lever_level2"
+                    button_level2.image = "button"
+                    mode = "game"
+                    
+    elif mode == "collection":
+        if button == mouse.LEFT:
+            #Wybieranie 1 postaci
+            if hero1_collection in buy_heroes:
+                if hero1_collection.collidepoint(pos):
+                    hero_image = "hero1"
+                    equip = True
+                    eq.pos = hero1_collection.pos
+                    hero.attack = 4
+            #Wybieranie 2 postaci
+            if hero2_collection in buy_heroes:
+                if hero2_collection.collidepoint(pos):
+                    hero_image = "hero2"
+                    equip = True
+                    eq.pos = hero2_collection.pos
+                    hero.attack = 5
+            #Wybieranie 3  postaci
+            if hero3_collection in buy_heroes:
+                if hero3_collection.collidepoint(pos):
+                    hero_image = "hero3"
+                    equip = True
+                    eq.pos = hero3_collection.pos
+                    hero.attack = 6
+        
+        #krzyżyk wyjścia z gry
+        if cross.collidepoint(pos):
+            mode = "menu"
+
+        
+
+
+        
+            
+
