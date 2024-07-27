@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strona Główna</title>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            margin: 0;
+            padding: 0 3%;
+            font-family: "Mulish", sans-serif;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 20px;
+            letter-spacing: 0.2em;
+            background: linear-gradient(100deg, #87BBA2 0%, #364958 100%);
+            color: #ffffff;
+        }
+        section {
+            min-height: 60vh; /* Zwiększona wysokość */
+            padding: 20px;
+        }
+        h1,
+        h2,
+        p {
+            margin: 0;
+        }
+
+        p {
+            font-size: 24px;
+            font-weight: 1500;
+            color: #C9E4CA;
+        }
+
+        h1 {
+            font-weight: 700;
+            font-size: 42px;
+        }
+
+        h2 {
+            font-weight: 700;
+            font-size: 28px;
+        }
+
+        h3 {
+            color: #C9E4CA;
+        }
+
+        img {
+            object-fit: contain;
+            width: 100%;
+            height: auto;
+            margin-top: 20px;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: 0.2s;
+        }
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            color: #C9E4CA;
+        }
+        .header {
+            display: flex;
+            justify-content: center;
+            padding: 30px 0;
+            width: 100%;
+        }
+        .main-list {
+            display: flex;
+            gap: 150px;
+        }
+        .list-item__link {
+            color: #C9E4CA;
+            position: relative;
+            font-size: 26px;
+            font-weight: 700;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .list-item__link::after {
+            position: absolute;
+            transition: 0.2s;
+            content: "";
+            border-radius: 10px;
+            width: 55%;
+            height: 3px;
+            bottom: -12px;
+            background: #3B6064;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        }
+        .list-item__link:hover::after {
+            width: 100%;
+        }
+        .home {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-size: cover;
+            padding: 0;
+            margin: 0;
+            background-position: center bottom;
+            gap: 20px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+        }
+        .button {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2em;
+            color: #fff;
+            text-align: center;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            height: 100%;
+        }
+        .home__title {
+            letter-spacing: 0.3em;
+            font-size: 70px;
+            text-align: center;
+            color: #87BBA2;
+            margin: 0;
+            padding: 0;
+            line-height: 1;
+            text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        }
+        .about {
+            margin-bottom: 0;
+        }
+
+        .about__title {
+            font-size: 40px;
+            position: relative;
+            text-align: left;
+            color: #3B6064;
+            line-height: 1;
+            text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            display: flex;
+            flex-direction: column;
+            width: fit-content;
+            margin-bottom: 20px;
+        }
+        .about__title::after {
+            position: absolute;
+            content: "";
+            border-radius: 10px;
+            width: 60%;
+            height: 1px;
+            bottom: -13px;
+            background: #fff;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        }
+        .info-block {
+            display: flex;
+            flex-direction: column;
+        }
+        .info-block__text {
+            margin-bottom: 10px;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        @media (max-width: 768px) {
+            .home__title {
+                font-size: 50px;
+            }
+            .about__title {
+                font-size: 40px;
+            }
+            .list-item__link {
+                font-size: 20px;
+            }
+            .main-list {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="header__nav main-nav">
+            <ul class="main-nav__list main-list">
+                <li class="main-list__item list-item">
+                    <a class="list-item__link" href="/chat">ChatBot</a>
+                </li>
+                <li class="main-list__item list-item">
+                    <a class="list-item__link" href="/game">Gra</a>
+                </li>
+                <li class="main-list__item list-item">
+                    <a class="list-item__link" href="https://climate.ec.europa.eu/index_en?prefLang=pl">Więcej</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <section id="home" class="home">
+        <h1 class="home__title">Zmiany klimatyczne</h1>
+        <p>Zmiany klimatyczne stanowią jedno z najważniejszych wyzwań współczesnego świata. Zrozumienie przyczyn, skutków i sposobów radzenia sobie z tym zjawiskiem jest kluczowe dla przyszłości naszej planety. Na tej stronie znajdziesz informacje na temat globalnego ocieplenia, topnienia lodowców, ekstremalnych zjawisk pogodowych i wiele więcej. Dowiedz się, jak zmiany klimatyczne wpływają na ekosystemy, bioróżnorodność i życie ludzi na całym świecie.</p>
+    </section>
+    <section id="about__climate-changes" class="about">
+        <h2 class="about__title">Co to zmiany klimatyczne?</h2>
+        <div class="about__info info-block">
+            <h3>Zmiany klimatyczne to długotrwałe zmiany w warunkach pogodowych na Ziemi, w tym globalne ocieplenie i inne zmiany klimatyczne. Główne przyczyny to emisja gazów cieplarnianych, takich jak dwutlenek węgla, spowodowana działalnością człowieka. Skutki obejmują:</h3>
+            <ul class="info-block__list">
+                <li class="info-block__text">- Globalne ocieplenie: Wzrost średnich temperatur na Ziemi.</li>
+                <li class="info-block__text">- Topnienie lodowców: Powoduje podnoszenie się poziomu mórz.</li>
+                <li class="info-block__text">- Ekstremalne zjawiska pogodowe: Więcej huraganów, fal upałów, susz i powodzi.</li>
+                <li class="info-block__text">- Zmiany w ekosystemach: Wpływ na bioróżnorodność i rozmieszczenie gatunków.</li>
+                <li class="info-block__text">- Wpływ na ludzkość: Problemy zdrowotne, bezpieczeństwo żywnościowe, dostęp do wody i gospodarka.</li>
+            </ul>
+        </div>
+    </section>
+    <section id="why__important" class="about">
+        <h2 class="about__title">Dlaczego to jest ważne?</h2>
+        <div class="about__info info-block">
+            <h3>Zmiany klimatyczne mają znaczący wpływ na nasze życie i przyszłość naszej planety. Zrozumienie i podejmowanie działań w celu łagodzenia tych zmian jest kluczowe dla ochrony środowiska i zdrowia publicznego. Niektóre z powodów, dla których warto się tym przejmować:</h3>
+            <ul class="info-block__list">
+                <li class="info-block__text">- Zdrowie publiczne: Zmiany klimatyczne mogą prowadzić do większej liczby chorób przenoszonych przez wodę i owady, takich jak malaria i denga.</li>
+                <li class="info-block__text">- Bezpieczeństwo żywnościowe: Wzrost temperatur i zmiany opadów wpływają na plony rolnicze, co zagraża bezpieczeństwu żywnościowemu.</li>
+                <li class="info-block__text">- Dostęp do wody: Topniejące lodowce i zmiany w opadach wpływają na dostępność świeżej wody.</li>
+                <li class="info-block__text">- Ekosystemy: Zmiany klimatyczne wpływają na różnorodność biologiczną, prowadząc do wymierania gatunków i zmian w ekosystemach.</li>
+                <li class="info-block__text">- Gospodarka: Ekstremalne zjawiska pogodowe, takie jak huragany i powodzie, powodują znaczne straty finansowe.</li>
+            </ul>
+        </div>
+    </section>
+    <section id="prevent__climate-changes" class="about">
+        <h2 class="about__title">Jak zapobiegać zmianom klimatycznym?</h2>
+        <div class="about__info info-block">
+            <h3>Podjęcie działań mających na celu ograniczenie zmian klimatycznych jest kluczowe dla ochrony naszej planety. Oto kilka sposobów, jak możesz przyczynić się do walki ze zmianami klimatycznymi:</h3>
+            <ul class="info-block__list">
+                <li class="info-block__text">- Ograniczenie emisji gazów cieplarnianych: Korzystaj z odnawialnych źródeł energii, takich jak energia słoneczna czy wiatrowa. Zmniejsz zużycie energii elektrycznej i ogrzewania poprzez efektywne urządzenia i ocieplenie budynków.</li>
+                <li class="info-block__text">- Zmniejszenie zużycia plastiku: Wybieraj produkty bez opakowań plastikowych, używaj wielokrotnego użytku torby, butelki i pojemniki. Recyklinguj plastik i inne materiały.</li>
+                <li class="info-block__text">- Zmiana stylu życia: Korzystaj z transportu publicznego, roweru lub chodzenia pieszo, zamiast jeździć samochodem. Oszczędzaj wodę i zmniejsz zużycie jedzenia pochodzenia zwierzęcego.</li>
+                <li class="info-block__text">- Wspieranie działań ochrony środowiska: Angażuj się w lokalne inicjatywy ekologiczne, wspieraj organizacje zajmujące się ochroną środowiska i promuj działania proekologiczne w swojej społeczności.</li>
+                <li class="info-block__text">- Edukacja i świadomość: Ucz się o zmianach klimatycznych i szerz wiedzę wśród innych. Im więcej osób będzie świadomych problemu, tym większa szansa na skuteczne działania na rzecz ochrony klimatu.</li>
+            </ul>
+        </div>
+    </section>
+</body>
+</html>

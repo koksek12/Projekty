@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gra Edukacyjna</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f0f8ff;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .game-container {
+            max-width: 800px;
+            width: 100%;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        h1 {
+            margin: 20px 0;
+            font-size: 36px;
+            color: #2c3e50;
+        }
+        .question {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .answers {
+            margin-bottom: 20px;
+        }
+        .answers button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            font-size: 18px;
+            color: #ffffff;
+            background-color: #3498db;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .answers button:hover {
+            background-color: #2980b9;
+        }
+        .feedback {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .feedback.correct {
+            color: #2ecc71;
+        }
+        .feedback.incorrect {
+            color: #e74c3c;
+        }
+        .next-button {
+            display: none; /* Początkowo ukryty */
+            width: 100%;
+            padding: 10px;
+            font-size: 18px;
+            color: #ffffff;
+            background-color: #2ecc71;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+        .next-button:hover {
+            background-color: #27ae60;
+        }
+        .back-button {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 10px 20px;
+            font-size: 18px;
+            color: #ffffff;
+            background-color: #e74c3c;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .back-button:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <a class="back-button" href="/page">Powrót do strony głównej</a>
+        <h1>Gra Edukacyjna o Zmianach Klimatycznych</h1>
+        <div id="question-container">
+            <div class="question" id="question">Pytanie pojawi się tutaj.</div>
+            <div class="answers">
+                <button class="answer-btn" data-answer="A">Odpowiedź A</button>
+                <button class="answer-btn" data-answer="B">Odpowiedź B</button>
+                <button class="answer-btn" data-answer="C">Odpowiedź C</button>
+                <button class="answer-btn" data-answer="D">Odpowiedź D</button>
+            </div>
+            <div id="feedback" class="feedback"></div>
+            <div id="score" class="feedback">Punkty: 0</div>
+            <button id="next-btn" class="next-button" onclick="nextQuestion()">Następne pytanie</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "Jaki jest główny gaz odpowiedzialny za efekt cieplarniany?",
+                answers: {
+                    A: "Dwutlenek węgla",
+                    B: "Metan",
+                    C: "Azot",
+                    D: "Tlen"
+                },
+                correct: "A"
+            },
+            {
+                question: "Co jest jednym z bezpośrednich skutków globalnego ocieplenia?",
+                answers: {
+                    A: "Zwiększona ilość opadów deszczu",
+                    B: "Wzrost poziomu mórz",
+                    C: "Spadek temperatur",
+                    D: "Zwiększona pokrywa lodowa"
+                },
+                correct: "B"
+            },
+            {
+                question: "Jakie działanie może pomóc w walce ze zmianami klimatycznymi?",
+                answers: {
+                    A: "Spalanie większej ilości paliw kopalnych",
+                    B: "Zwiększenie deforestacji",
+                    C: "Redukcja emisji gazów cieplarnianych",
+                    D: "Zwiększenie użycia plastiku"
+                },
+                correct: "C"
+            },
+            {
+                question: "Co to jest adaptacja w kontekście zmian klimatycznych?",
+                answers: {
+                    A: "Dostosowanie się do zmian w środowisku",
+                    B: "Zwiększenie emisji gazów cieplarnianych",
+                    C: "Ignorowanie skutków zmian klimatycznych",
+                    D: "Zwiększenie zużycia zasobów naturalnych"
+                },
+                correct: "A"
+            },
+            {
+                question: "Jakie są możliwe skutki topnienia lodowców?",
+                answers: {
+                    A: "Obniżenie poziomu mórz",
+                    B: "Wzrost poziomu mórz",
+                    C: "Zmniejszenie opadów",
+                    D: "Zwiększenie pokrywy lodowej"
+                },
+                correct: "B"
+            }
+            // Można dodać więcej pytań, jeśli potrzeba
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            if (currentQuestionIndex >= questions.length) {
+                document.getElementById('question').textContent = 'Gratulacje! Ukończyłeś grę.';
+                document.getElementById('feedback').textContent = '';
+                document.getElementById('next-btn').style.display = 'none';
+                document.querySelectorAll('.answer-btn').forEach(btn => {
+                    btn.style.display = 'none'; // Ukrycie przycisków odpowiedzi
+                });
+                return;
+            }
+
+            const questionData = questions[currentQuestionIndex];
+            document.getElementById('question').textContent = questionData.question;
+            document.querySelectorAll('.answer-btn').forEach((btn, index) => {
+                const answerKey = String.fromCharCode(65 + index);
+                btn.textContent = questionData.answers[answerKey];
+                btn.disabled = false; // Aktywowanie przycisków
+            });
+            document.getElementById('feedback').textContent = '';
+            document.getElementById('next-btn').style.display = 'none'; // Ukrycie przycisku "Następne pytanie"
+        }
+
+        function checkAnswer(selectedAnswer) {
+            const questionData = questions[currentQuestionIndex];
+            const feedbackElement = document.getElementById('feedback');
+            if (selectedAnswer === questionData.correct) {
+                feedbackElement.textContent = 'Dobrze!';
+                feedbackElement.className = 'feedback correct';
+                score += 10; // Przyznanie punktów za dobrą odpowiedź
+            } else {
+                feedbackElement.textContent = 'Źle, spróbuj ponownie.';
+                feedbackElement.className = 'feedback incorrect';
+            }
+            document.getElementById('score').textContent = 'Punkty: ' + score;
+            document.getElementById('next-btn').style.display = 'block'; // Pokazanie przycisku "Następne pytanie"
+            document.querySelectorAll('.answer-btn').forEach(btn => {
+                btn.disabled = true; // Zablokowanie przycisków odpowiedzi po wyborze
+            });
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            loadQuestion();
+        }
+
+        // Event listener dla przycisków odpowiedzi
+        document.querySelectorAll('.answer-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                checkAnswer(this.dataset.answer);
+            });
+        });
+
+        // Load the first question when the page loads
+        window.onload = loadQuestion;
+    </script>
+</body>
+</html>
