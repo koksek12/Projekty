@@ -1,56 +1,57 @@
-> Czatbot AI do Zmian Klimatycznych
-> 
-Przegląd
-Czatbot AI do Zmian Klimatycznych to projekt oparty na Pythonie, który wykorzystuje wstępnie wytrenowany model językowy do dostarczania informacji i odpowiadania na pytania dotyczące zmian klimatycznych. Czatbot ma na celu pomóc użytkownikom zrozumieć wpływ zmian klimatycznych, dostarczać dane i statystyki oraz sugerować działania mające na celu ich złagodzenie.
+# Projekt Chatbot i Gra Edukacyjna
 
-> Funkcje
-> 
-Interaktywny Czatbot: Rozmawiaj z czatbotem, aby dowiedzieć się więcej o zmianach klimatycznych.
-Wstępnie Wytrenowany Model: Wykorzystuje GPT-2, wstępnie wytrenowany model językowy z biblioteki transformers od Hugging Face.
-Lokalne Wykonanie: Działa lokalnie na Twoim komputerze bez potrzeby posiadania kluczy API lub dostępu do internetu (po zainstalowaniu zależności).
-Instalacja
-Wymagania wstępne
-Python 3.6 lub nowszy
-pip (instalator pakietów Python)
-Kroki
-Sklonuj repozytorium:
+Ten projekt to aplikacja internetowa, która oferuje platformę edukacyjną, mającą na celu zwiększenie świadomości na temat zmian klimatycznych. Zawiera chatbota zasilanego przez GPT-2, edukacyjną grę quizową oraz strony informacyjne o zmianach klimatu.
 
-> bash
-> 
-Copy code
-git clone https://github.com/yourusername/climate-change-chatbot.git
-cd climate-change-chatbot
-Utwórz wirtualne środowisko (opcjonalne, ale zalecane):
+## Funkcje
 
-> bash
->
-Copy code
-python -m venv venv
-source venv/bin/activate  # Na Windows użyj `venv\Scripts\activate`
-Zainstaluj wymagane pakiety:
+- **Chatbot**: Agent konwersacyjny korzystający z modelu GPT-2 do generowania odpowiedzi. Obsługuje rozmowy w języku polskim dzięki tłumaczeniu wejścia i wyjścia za pomocą Google Translate.
+- **Gra Edukacyjna**: Interaktywny quiz, który sprawdza i poszerza wiedzę na temat zmian klimatycznych poprzez pytania wielokrotnego wyboru.
+- **Strony Informacyjne**: Zawiera strony z informacjami i zasobami dotyczącymi zmian klimatycznych, mające na celu edukację użytkowników.
 
-> bash
-> 
-Copy code
-pip install transformers torch
-Użycie
-Aby uruchomić czatbota, uruchom skrypt chatbot.py:
+## Stos Technologiczny
 
-> bash
-> 
-Copy code
-python chatbot.py
-Przykładowa Interakcja
-vbnet
-Copy code
-Witaj w czatbot! Wpisz 'quit', aby zakończyć.
-Ty: Jakie są główne przyczyny zmian klimatycznych?
-Czatbot: Główne przyczyny zmian klimatycznych to...
-Wkład
-Jeśli chcesz przyczynić się do rozwoju projektu, otwórz zgłoszenie (issue) lub wyślij zapytanie do włączenia zmian (pull request) w repozytorium GitHub.
+- **Backend**: Python, Flask
+- **Frontend**: HTML, CSS, JavaScript
+- **Uczenie Maszynowe**: Transformers (Hugging Face) dla modelu GPT-2
+- **Tłumaczenie**: Googletrans do tłumaczenia
 
-> Licencja
-> 
-Ten projekt jest licencjonowany na podstawie licencji MIT - zobacz plik LICENSE po więcej informacji.
+## Wymagania
 
-Dostosuj powyższy plik README do swoich specyficznych potrzeb i szczegółów projektu.
+- Python 3.7 lub nowszy
+- Flask
+- PyTorch
+- Biblioteka Transformers od Hugging Face
+- Biblioteka googletrans do tłumaczenia
+
+## Instalacja
+
+1. **Sklonuj repozytorium**:
+    ```bash
+    git clone https://github.com/twoja-nazwa-użytkownika/twoje-repo.git
+    cd twoje-repo
+    ```
+
+2. **Utwórz wirtualne środowisko** (opcjonalnie, ale zalecane):
+    ```bash
+    python3 -m venv venv
+    source venv/bin/activate  # Na Windows użyj `venv\Scripts\activate`
+    ```
+
+3. **Zainstaluj wymagane pakiety**:
+    ```bash
+    pip install flask, transformers, googletrans. torch
+    ```
+
+4. **Uruchom aplikację**:
+    ```bash
+    python main.py
+    ```
+
+   Aplikacja będzie dostępna pod adresem `http://localhost:5001`.
+
+## Podziękowania
+
+- Projekt korzysta z biblioteki [Transformers](https://github.com/huggingface/transformers) od Hugging Face.
+- Tłumaczenie realizowane jest za pomocą biblioteki [Googletrans](https://github.com/ssut/py-googletrans).
+
+
